@@ -121,7 +121,7 @@ export function AgeCalculator() {
             setResult(null);
           }}
           max={new Date().toISOString().split("T")[0]}
-          className="bg-background/60 border-border/40 focus:border-primary/50 transition-all"
+          className="bg-background/60 border-border/40 focus:border-primary/50 transition-all text-foreground"
           data-ocid="age-dob"
         />
       </div>

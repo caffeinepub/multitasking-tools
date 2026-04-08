@@ -133,7 +133,7 @@ export function TextStyleGenerator() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your text here…"
-          className="bg-background/60 border-border/40 focus:border-primary/50 min-h-[72px] resize-none font-body text-sm transition-all"
+          className="bg-background/60 border-border/40 focus:border-primary/50 min-h-[72px] resize-none font-body text-sm text-foreground transition-all"
           data-ocid="text-style-input"
         />
         <p className="text-xs text-muted-foreground/60">

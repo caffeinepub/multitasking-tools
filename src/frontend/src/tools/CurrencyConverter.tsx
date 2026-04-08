@@ -128,7 +128,7 @@ export function CurrencyConverter() {
             }}
           >
             <SelectTrigger
-              className="bg-background/50"
+              className="bg-background/50 text-foreground"
               data-ocid="currency-from"
             >
               <SelectValue />
@@ -157,7 +157,10 @@ export function CurrencyConverter() {
               setResult(null);
             }}
           >
-            <SelectTrigger className="bg-background/50" data-ocid="currency-to">
+            <SelectTrigger
+              className="bg-background/50 text-foreground"
+              data-ocid="currency-to"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="max-h-56">
@@ -192,7 +195,7 @@ export function CurrencyConverter() {
             setAmount(e.target.value);
             setResult(null);
           }}
-          className="bg-background/50"
+          className="bg-background/50 text-foreground"
           placeholder="Enter amount"
           data-ocid="currency-amount"
         />

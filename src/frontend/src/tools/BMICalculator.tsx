@@ -140,7 +140,7 @@ export function BMICalculator() {
             type="number"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm"
+            className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm text-foreground"
             data-ocid="bmi-weight"
           />
         </div>
@@ -157,7 +157,7 @@ export function BMICalculator() {
             type="number"
             value={height}
             onChange={(e) => setHeight(e.target.value)}
-            className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm"
+            className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm text-foreground"
             data-ocid="bmi-height"
           />
         </div>

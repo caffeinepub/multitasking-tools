@@ -14,6 +14,7 @@ interface EMIResult {
   emi: number;
   totalPayment: number;
   totalInterest: number;
+  totalMonths: number;
   schedule: {
     month: number;
     principal: number;
@@ -22,9 +23,14 @@ interface EMIResult {
   }[];
 }
 
-function calcEMI(principal: number, rate: number, tenure: number): EMIResult {
+function calcEMI(
+  principal: number,
+  rate: number,
+  tenure: number,
+  unit: "years" | "months",
+): EMIResult {
   const r = rate / 100 / 12;
-  const n = tenure * 12;
+  const n = unit === "years" ? tenure * 12 : tenure;
   const emi = (principal * r * (1 + r) ** n) / ((1 + r) ** n - 1);
   const totalPayment = emi * n;
   const totalInterest = totalPayment - principal;
@@ -41,37 +47,30 @@ function calcEMI(principal: number, rate: number, tenure: number): EMIResult {
       balance: Math.max(balance, 0),
     });
   }
-  return { emi, totalPayment, totalInterest, schedule };
+  return { emi, totalPayment, totalInterest, totalMonths: n, schedule };
 }
 
 const fmt = (n: number) =>
   `₹${n.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
 
-const FIELDS = [
+type FieldId = "emi-principal" | "emi-rate" | "emi-tenure";
+
+const STATIC_FIELDS = [
   {
     label: "Loan Amount",
-    id: "emi-principal",
+    id: "emi-principal" as FieldId,
     placeholder: "500000",
     icon: IndianRupee,
     suffix: "₹",
   },
   {
     label: "Annual Interest Rate",
-    id: "emi-rate",
+    id: "emi-rate" as FieldId,
     placeholder: "8.5",
     icon: Percent,
     suffix: "%",
   },
-  {
-    label: "Loan Tenure",
-    id: "emi-tenure",
-    placeholder: "5",
-    icon: Clock,
-    suffix: "yrs",
-  },
 ] as const;
-
-type FieldId = (typeof FIELDS)[number]["id"];
 
 export function LoanEMI() {
   const [values, setValues] = useState<Record<FieldId, string>>({
@@ -79,14 +78,22 @@ export function LoanEMI() {
     "emi-rate": "8.5",
     "emi-tenure": "5",
   });
+  const [tenureUnit, setTenureUnit] = useState<"years" | "months">("years");
   const [result, setResult] = useState<EMIResult | null>(null);
 
   const calculate = () => {
     const p = Number.parseFloat(values["emi-principal"]);
     const r = Number.parseFloat(values["emi-rate"]);
     const t = Number.parseFloat(values["emi-tenure"]);
-    if (p > 0 && r > 0 && t > 0) setResult(calcEMI(p, r, t));
+    if (p > 0 && r > 0 && t > 0) setResult(calcEMI(p, r, t, tenureUnit));
   };
+
+  const tenureDisplay = (() => {
+    const t = Number.parseFloat(values["emi-tenure"]);
+    if (!result || Number.isNaN(t)) return "";
+    if (tenureUnit === "years") return `${t} year${t !== 1 ? "s" : ""}`;
+    return `${t} month${t !== 1 ? "s" : ""}`;
+  })();
 
   const interestPct = result
     ? Math.round((result.totalInterest / result.totalPayment) * 100)
@@ -94,9 +101,9 @@ export function LoanEMI() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Input fields */}
+      {/* Static input fields (Principal & Rate) */}
       <div className="flex flex-col gap-3">
-        {FIELDS.map(({ label, id, placeholder, icon: Icon, suffix }) => (
+        {STATIC_FIELDS.map(({ label, id, placeholder, icon: Icon, suffix }) => (
           <div key={id} className="flex flex-col gap-1.5">
             <Label
               htmlFor={id}
@@ -114,7 +121,7 @@ export function LoanEMI() {
                   setValues((prev) => ({ ...prev, [id]: e.target.value }))
                 }
                 placeholder={placeholder}
-                className="bg-background/60 border-border/40 focus:border-primary/50 transition-all pr-10"
+                className="bg-background/60 border-border/40 focus:border-primary/50 transition-all pr-10 text-foreground"
                 data-ocid={id}
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-muted-foreground pointer-events-none">
@@ -123,6 +130,88 @@ export function LoanEMI() {
             </div>
           </div>
         ))}
+
+        {/* Loan Tenure with Years/Months toggle */}
+        <div className="flex flex-col gap-1.5">
+          <Label
+            htmlFor="emi-tenure"
+            className="text-xs font-semibold text-foreground/80 flex items-center gap-1.5"
+          >
+            <Clock className="w-3.5 h-3.5" />
+            Loan Tenure
+          </Label>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Input
+                id="emi-tenure"
+                type="number"
+                value={values["emi-tenure"]}
+                onChange={(e) =>
+                  setValues((prev) => ({
+                    ...prev,
+                    "emi-tenure": e.target.value,
+                  }))
+                }
+                placeholder={tenureUnit === "years" ? "5" : "60"}
+                className="bg-background/60 border-border/40 focus:border-primary/50 transition-all text-foreground"
+                data-ocid="emi-tenure"
+              />
+            </div>
+            {/* Years / Months toggle */}
+            <div className="flex rounded-lg border border-border/40 overflow-hidden h-9 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  if (tenureUnit !== "years") {
+                    // convert months → years
+                    const months = Number.parseFloat(values["emi-tenure"]);
+                    if (!Number.isNaN(months)) {
+                      setValues((prev) => ({
+                        ...prev,
+                        "emi-tenure": String(Math.round(months / 12)),
+                      }));
+                    }
+                    setTenureUnit("years");
+                    setResult(null);
+                  }
+                }}
+                className={`px-3 text-xs font-semibold transition-all ${
+                  tenureUnit === "years"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background/60 text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
+                data-ocid="emi-tenure-years"
+              >
+                Yrs
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (tenureUnit !== "months") {
+                    // convert years → months
+                    const years = Number.parseFloat(values["emi-tenure"]);
+                    if (!Number.isNaN(years)) {
+                      setValues((prev) => ({
+                        ...prev,
+                        "emi-tenure": String(Math.round(years * 12)),
+                      }));
+                    }
+                    setTenureUnit("months");
+                    setResult(null);
+                  }
+                }}
+                className={`px-3 text-xs font-semibold transition-all border-l border-border/40 ${
+                  tenureUnit === "months"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background/60 text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
+                data-ocid="emi-tenure-months"
+              >
+                Mos
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <Button
@@ -146,7 +235,7 @@ export function LoanEMI() {
               {fmt(result.emi)}
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              per month for {values["emi-tenure"]} years
+              per month for {tenureDisplay}
             </p>
           </div>
 
@@ -204,7 +293,7 @@ export function LoanEMI() {
             <div className="px-3 py-2 border-b border-border/20 flex items-center gap-2">
               <Clock className="w-3.5 h-3.5 text-muted-foreground" />
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                First 12 Months
+                First {Math.min(result.totalMonths, 12)} Months
               </p>
             </div>
             <div className="overflow-x-auto">

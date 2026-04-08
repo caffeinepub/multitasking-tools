@@ -188,7 +188,7 @@ export function ImageResizer() {
                 value={width}
                 onChange={(e) => handleWidthChange(e.target.value)}
                 type="number"
-                className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm"
+                className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm text-foreground"
                 data-ocid="img-width"
               />
             </div>
@@ -204,7 +204,7 @@ export function ImageResizer() {
                 value={height}
                 onChange={(e) => handleHeightChange(e.target.value)}
                 type="number"
-                className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm"
+                className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm text-foreground"
                 data-ocid="img-height"
               />
             </div>

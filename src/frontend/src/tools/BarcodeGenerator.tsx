@@ -112,7 +112,7 @@ export function BarcodeGenerator() {
           }}
         >
           <SelectTrigger
-            className="bg-background/60 border-border/40 focus:border-primary/50 transition-all"
+            className="bg-background/60 border-border/40 focus:border-primary/50 transition-all text-foreground"
             data-ocid="bc-format"
           >
             <SelectValue />
@@ -167,7 +167,7 @@ export function BarcodeGenerator() {
             setError("");
           }}
           placeholder="Enter barcode value"
-          className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm"
+          className="bg-background/60 border-border/40 focus:border-primary/50 transition-all font-mono text-sm text-foreground"
           data-ocid="bc-input"
         />
       </div>
