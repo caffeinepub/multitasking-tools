@@ -1,0 +1,28 @@
+{
+  "overview": "A 12-tool productivity dashboard with a premium glassmorphism UI, dark/light theme toggle, live currency rates, QR/barcode generators, image tools, PDF toolkit, calculators, and AI text humanization — all accessible from a single responsive dashboard with quick-jump navigation.",
+  "features": [
+    "12 productivity tools in a responsive card grid",
+    "Dark/light theme with localStorage persistence",
+    "Quick-jump sidebar navigation to all tools",
+    "Currency Converter with live exchange rates",
+    "Password Generator, QR Code, Barcode Generator",
+    "Image Compressor and Image Resizer",
+    "PDF Toolkit (merge, split, compress, images to PDF)",
+    "Text Style Generator with Unicode styles",
+    "Age, Loan EMI, and BMI calculators",
+    "AI Text Humanizer via external API",
+    "Glassmorphism cards with smooth animations",
+    "Fixed header with branding and theme toggle"
+  ],
+  "category": "productivity",
+  "tags": [
+    "multitool",
+    "productivity",
+    "dashboard",
+    "calculators",
+    "generators",
+    "dark-ui",
+    "glassmorphism"
+  ],
+  "last_updated": "2026-04-08T20:26:09.510Z"
+}

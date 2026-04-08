@@ -1,0 +1,469 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Space Grotesk";
+    --font-body: "Plus Jakarta Sans";
+    --font-mono: "JetBrains Mono";
+    --radius: 0.75rem;
+
+    --background: 0.97 0.006 230;
+    --foreground: 0.15 0.018 230;
+    --card: 1.0 0.003 230;
+    --card-foreground: 0.15 0.018 230;
+    --popover: 1.0 0.003 230;
+    --popover-foreground: 0.15 0.018 230;
+
+    --primary: 0.45 0.22 265;
+    --primary-foreground: 0.98 0.005 265;
+
+    --secondary: 0.94 0.012 230;
+    --secondary-foreground: 0.28 0.015 230;
+    --muted: 0.93 0.01 230;
+    --muted-foreground: 0.5 0.012 230;
+
+    --accent: 0.6 0.16 170;
+    --accent-foreground: 0.98 0.005 170;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.98 0.005 25;
+
+    --border: 0.88 0.008 230;
+    --input: 0.88 0.01 230;
+    --ring: 0.45 0.22 265;
+
+    --chart-1: 0.65 0.22 40;
+    --chart-2: 0.6 0.12 185;
+    --chart-3: 0.4 0.07 227;
+    --chart-4: 0.83 0.19 84;
+    --chart-5: 0.77 0.19 70;
+
+    --sidebar: 0.98 0.008 230;
+    --sidebar-foreground: 0.15 0.018 230;
+    --sidebar-primary: 0.45 0.22 265;
+    --sidebar-primary-foreground: 0.98 0.005 265;
+    --sidebar-accent: 0.93 0.01 230;
+    --sidebar-accent-foreground: 0.28 0.015 230;
+    --sidebar-border: 0.88 0.008 230;
+    --sidebar-ring: 0.45 0.22 265;
+  }
+
+  .dark {
+    --background: 0.11 0.025 280;
+    --foreground: 0.95 0.01 280;
+    --card: 0.17 0.028 280;
+    --card-foreground: 0.95 0.01 280;
+    --popover: 0.2 0.032 280;
+    --popover-foreground: 0.95 0.01 280;
+
+    --primary: 0.68 0.26 300;
+    --primary-foreground: 0.98 0.005 300;
+
+    --secondary: 0.22 0.032 280;
+    --secondary-foreground: 0.85 0.01 280;
+    --muted: 0.22 0.028 280;
+    --muted-foreground: 0.55 0.015 280;
+
+    --accent: 0.78 0.2 55;
+    --accent-foreground: 0.14 0.02 55;
+
+    --destructive: 0.58 0.22 25;
+    --destructive-foreground: 0.95 0.01 25;
+
+    --border: 0.28 0.028 280;
+    --input: 0.28 0.028 280;
+    --ring: 0.68 0.26 300;
+
+    --chart-1: 0.49 0.24 264;
+    --chart-2: 0.7 0.17 162;
+    --chart-3: 0.77 0.19 70;
+    --chart-4: 0.63 0.27 304;
+    --chart-5: 0.65 0.25 16;
+
+    --sidebar: 0.15 0.028 280;
+    --sidebar-foreground: 0.95 0.01 280;
+    --sidebar-primary: 0.68 0.26 300;
+    --sidebar-primary-foreground: 0.98 0.005 300;
+    --sidebar-accent: 0.22 0.028 280;
+    --sidebar-accent-foreground: 0.85 0.01 280;
+    --sidebar-border: 0.28 0.028 280;
+    --sidebar-ring: 0.68 0.26 300;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(var(--border));
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(var(--muted-foreground) / 0.5);
+  }
+
+  ::selection {
+    background: oklch(var(--primary) / 0.25);
+    color: oklch(var(--foreground));
+  }
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono.woff2") format("woff2");
+  font-display: swap;
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ─── Glassmorphism ─────────────────────────────────── */
+  .glass {
+    background-color: oklch(var(--card) / 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-width: 1px;
+    border-style: solid;
+    border-color: oklch(var(--border) / 0.35);
+  }
+
+  .glass-deep {
+    background-color: oklch(var(--card) / 0.6);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    border-width: 1px;
+    border-style: solid;
+    border-color: oklch(var(--border) / 0.25);
+  }
+
+  .glass-hover {
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-hover:hover {
+    background-color: oklch(var(--card) / 0.92);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border-color: oklch(var(--primary) / 0.4);
+    box-shadow: 0 0 0 1px oklch(var(--primary) / 0.12), 0 8px 32px -8px
+      oklch(var(--primary) / 0.25), inset 0 1px 0 oklch(1 0 0 / 0.08);
+  }
+
+  /* ─── Typography ────────────────────────────────────── */
+  .gradient-text {
+    background: linear-gradient(
+      135deg,
+      oklch(var(--primary)) 0%,
+      oklch(0.75 0.18 310) 50%,
+      oklch(var(--accent)) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-text-gold {
+    background: linear-gradient(
+      135deg,
+      oklch(0.82 0.16 75) 0%,
+      oklch(0.92 0.12 55) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ─── Shadows ───────────────────────────────────────── */
+  .shadow-glass {
+    box-shadow: 0 2px 8px -2px oklch(var(--primary) / 0.15), 0 4px 24px -4px
+      oklch(0 0 0 / 0.12), inset 0 1px 0 oklch(1 0 0 / 0.06);
+  }
+
+  .shadow-glass-hover {
+    box-shadow:
+      0 0 0 1px oklch(var(--primary) / 0.2),
+      0 8px 32px -4px oklch(var(--primary) / 0.3),
+      0 16px 48px -8px oklch(0 0 0 / 0.2),
+      inset 0 1px 0 oklch(1 0 0 / 0.1);
+  }
+
+  .shadow-glow-primary {
+    box-shadow: 0 0 20px oklch(var(--primary) / 0.4), 0 0 40px
+      oklch(var(--primary) / 0.15);
+  }
+
+  .shadow-glow-accent {
+    box-shadow: 0 0 20px oklch(var(--accent) / 0.35), 0 0 40px
+      oklch(var(--accent) / 0.12);
+  }
+
+  /* ─── Borders ───────────────────────────────────────── */
+  .border-gradient {
+    position: relative;
+  }
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      oklch(var(--primary) / 0.6),
+      oklch(var(--accent) / 0.4),
+      oklch(var(--primary) / 0.1)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ─── Backgrounds ───────────────────────────────────── */
+  .bg-mesh {
+    background-image: radial-gradient(
+        at 20% 25%,
+        oklch(var(--primary) / 0.12) 0px,
+        transparent 50%
+      ),
+      radial-gradient(
+        at 80% 75%,
+        oklch(var(--accent) / 0.1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(
+        at 50% 10%,
+        oklch(0.7 0.2 310 / 0.08) 0px,
+        transparent 50%
+      );
+  }
+
+  .bg-radial-glow {
+    background: radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      oklch(var(--primary) / 0.18) 0%,
+      transparent 70%
+    );
+  }
+
+  /* ─── Input Focus ───────────────────────────────────── */
+  .input-glow:focus-within {
+    box-shadow: 0 0 0 2px oklch(var(--ring) / 0.3), 0 0 12px
+      oklch(var(--ring) / 0.15);
+  }
+
+  /* ─── Shimmer animation ─────────────────────────────── */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      oklch(1 0 0 / 0.06) 50%,
+      transparent 60%
+    );
+    transform: translateX(-100%);
+    transition: none;
+  }
+  .shimmer:hover::after {
+    transform: translateX(100%);
+    transition: transform 0.6s ease;
+  }
+
+  /* ─── Card entrance ─────────────────────────────────── */
+  .animate-slide-up {
+    animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.25s ease both;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .animate-pulse-soft {
+    animation: pulseSoft 2.5s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+  }
+}
+
+/* ─── Keyframes ─────────────────────────────────────────── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseSoft {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 oklch(var(--primary) / 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px oklch(var(--primary) / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 oklch(var(--primary) / 0);
+  }
+}
+
+@keyframes orbPulse {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 0.15;
+  }
+  50% {
+    transform: scale(1.15) translateY(-20px);
+    opacity: 0.22;
+  }
+}
+
+/* ─── Orb backgrounds ───────────────────────────────────── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: orbPulse 8s ease-in-out infinite;
+}
+.orb-primary {
+  background: radial-gradient(
+    circle,
+    oklch(var(--primary) / 0.6),
+    transparent 70%
+  );
+}
+.orb-accent {
+  background: radial-gradient(
+    circle,
+    oklch(var(--accent) / 0.5),
+    transparent 70%
+  );
+  animation-delay: -3s;
+}
+.orb-violet {
+  background: radial-gradient(
+    circle,
+    oklch(0.65 0.24 290 / 0.5),
+    transparent 70%
+  );
+  animation-delay: -5s;
+}
+
+/* ─── Reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
